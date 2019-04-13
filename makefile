@@ -12,4 +12,4 @@ rem_pattern.txt: occurences.txt
 	head -n $(NUM_REMOVE) occurences.txt | awk '{print $$2}' - > rem_pattern.txt
 
 filtered.txt: rem_pattern.txt english.txt
-	awk '{a=$$0; s="\x80"; gsub(/[[:punct:]]/, " ", a); print a,s,$$0}' english.txt | tee pairs.txt | grep -a -v -F -f rem_pattern.txt - | awk -F '\x80' '{print $$2}' - | tee filtered.txt | head
+	awk '{a=$$0; s="\x80"; gsub(/[[:punct:]]/, " ", a); print a s $$0}' english.txt | tee pairs.txt | grep -a -v -F -f rem_pattern.txt - | awk -F '\x80' '{print $$2}' - | tee filtered.txt | wc -l
