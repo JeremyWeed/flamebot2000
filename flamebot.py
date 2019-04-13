@@ -1,8 +1,12 @@
 import os
+import argparse
+import random
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.optim as optim
 import torch
+from torch.autograd import Variable
 
 
 class RNN(nn.Module):
@@ -42,5 +46,43 @@ class RNN(nn.Module):
     def initHidden(self):
         return torch.zeros(1, self.hidden_size)
 
-n_hidden = 128
-rnn = RNN(n_letters, n_hidden, n_categories)
+
+def train(model, loader, optimizer, criterion, epoch, device):
+    model.train()
+    for i, (input, target) in enumerate(loader):
+        input = Variable(input)
+        target = Variable(target)
+        input, target = input.to(device), target.to(device)
+        optimizer.zero_grad()
+        output = model(input)
+        loss = criterion(output, target)
+        loss.backward()
+        optimizer.step()
+    print('Train: epoch {}\t'.format(epoch))
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='code')
+    parser.add_argument('--data_path', type=str, default=None,
+                        help='path to dataset')
+    parser.add_argument('--seed', type=int, default=1,
+                        help='random seed')
+    parser.add_argument('--lr', type=float, default=0.01,
+                        help='learning rate')
+    parser.add_argument('--momentum', type=float, default=0.01,
+                        help='momentum')
+    parser.add_argument('--epochs', type=int, default=10,
+                        help='epochs')
+    args = parser.parse_args()
+    torch.manual_seed(args.seed)
+    random.seed(args.seed)
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    model = RNN(40, 40, 40, 40)
+    model.to(device)
+    optimizer = optim.SGD(model.parameters(), lr=args.lr,
+                          momentum=args.momentum)
+    criterion = nn.CrossEntropyLoss()
+
+    for epoch in range(args.epochs):
+        train(model, train_loader, optimizer, criterion, epoch, device)
+        test(model, test_loader, criterion, epoch, device)
