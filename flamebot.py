@@ -35,10 +35,9 @@ class RNN(nn.Module):
         l1 = self.lstm1(embeddings)
         l2 = self.lstm1(l1)
         attn_weights = F.softmax(self.attn(torch.cat((embeddings, l1, l2), 1)),
-                                 dim=0)
-        attn_applied = torch.bmm(attn_weights.unsqueeze(0), )
-        output = self.softmax(output)
-        return output, hidden
+                                 dim=1)
+        output = self.softmax(self.output(attn_weights))
+        return output
 
     def initHidden(self):
         return torch.zeros(1, self.hidden_size)
