@@ -120,4 +120,4 @@ if __name__ == '__main__':
         batch_size=64, shuffle=True, num_workers=4)
     for epoch in range(args.epochs):
         train(model, train_loader, optimizer, criterion, epoch, device)
-    torch.save(model, "flamebot2000.pt")
+    torch.save(model.state_dict(), "flamebot2000.pt")
