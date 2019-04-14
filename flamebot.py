@@ -69,7 +69,7 @@ class Dataset(data.Dataset):
         X = [int(c) for c in X]
         # Load data and get label
         X = torch.tensor(X[:-1], dtype=torch.long)
-        y = X[-1]
+        y = torch.tensor(int(X[-1]), dtype=torch.long)
         return X, y
 
 
