@@ -53,11 +53,12 @@ class Dataset(data.Dataset):
     def __init__(self, path, n_samples, n_read):
         'Initialization'
         self.path = path
+        self.n_samples = n_samples
         self.n_read = n_read
 
     def __len__(self):
         'Denotes the total number of samples'
-        return len(self.n_samples)
+        return self.n_samples
 
     def __getitem__(self, index):
         'Generates one sample of data'
@@ -104,7 +105,7 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     random.seed(args.seed)
 
-    file_size = os.path.getsize('args.data_path')
+    file_size = os.path.getsize(args.data_path)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     model = RNN(40, 40, 40, 40)
