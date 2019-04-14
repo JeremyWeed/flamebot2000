@@ -99,7 +99,7 @@ if __name__ == '__main__':
                         help='momentum')
     parser.add_argument('--epochs', type=int, default=10,
                         help='epochs')
-    parser.add_argument('--n_chars', type=int, default=40,
+    parser.add_argument('--n_chars', type=int, default=128,
                         help='number of chars to feed in at a time')
     args = parser.parse_args()
     torch.manual_seed(args.seed)
@@ -108,7 +108,7 @@ if __name__ == '__main__':
     file_size = os.path.getsize(args.data_path)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    model = RNN(40, 40, 40, 40)
+    model = RNN(args.n_chars, 40, 40, 40)
     model.to(device)
     optimizer = optim.SGD(model.parameters(), lr=args.lr,
                           momentum=args.momentum)
