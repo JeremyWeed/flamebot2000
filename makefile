@@ -1,6 +1,7 @@
 MAIN_DATA=gosuai-dota-2-game-chats/dota2_chat_messages.csv
 COLUMN_DATA=column4.txt
 NUM_REMOVE=600000
+NUM_SAMPLE=10000
 
 english.txt:
 	 grep -v -P -e "[^\x00-\x7F]" $(COLUMN_DATA) | tee english.txt | wc -l
@@ -13,3 +14,6 @@ rem_pattern.txt: occurences.txt
 
 filtered.txt: rem_pattern.txt english.txt
 	awk '{a=$$0; s="\x80"; gsub(/[[:punct:]]/, " ", a); print a s $$0}' english.txt | tee pairs.txt | grep -a -v -F -f rem_pattern.txt - | awk -F '\x80' '{print $$2}' - | tee filtered.txt | wc -l
+
+subsampled.txt: filtered.txt
+	shuf -n $(NUM_SAMPLE) -o subsampled.txt filtered.txt 
