@@ -32,7 +32,7 @@ class RNN(nn.Module):
         # dense output layer
         self.output = nn.Linear(self.n_chars+2*self.hidden_size, self.n_chars)
         # softmax output for probabilities
-        self.softmax = nn.Softmax(dim=0)
+        self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
         # x is input of length 40? of character indices
@@ -41,7 +41,7 @@ class RNN(nn.Module):
         l2, _ = self.lstm2(l1)
         attn_weights = F.softmax(self.attn(torch.cat((embeddings, l1, l2), dim=2)),
                                  dim=0)
-        _, output = torch.max(self.softmax(self.output(attn_weights)).unsqueeze(dim=0))
+        _, output = torch.max(self.softmax(self.output(attn_weights)))
         return output
 
     def initHidden(self):
