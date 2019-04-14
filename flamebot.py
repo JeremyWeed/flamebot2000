@@ -38,7 +38,7 @@ class RNN(nn.Module):
         # x is input of length 40? of character indices
         embeddings = self.embedding(x)
         l1, _ = self.lstm1(embeddings)
-        l2, _ = self.lstm1(l1)
+        l2, _ = self.lstm2(l1)
         attn_weights = F.softmax(self.attn(torch.cat((embeddings, l1, l2), 1)),
                                  dim=1)
         output = self.softmax(self.output(attn_weights))
