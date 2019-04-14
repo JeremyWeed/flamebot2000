@@ -24,6 +24,6 @@ if __name__ == "__main__":
 
     out = deque(string_to_byte(seed), 40)
     for i in range(40):
-        out.append(str(model(tt(list(out)))))
+        out.append(str(model(torch.tensor(list(out), dtype=torch.long))))
 
     print("generated:" + byte_to_string(list(out)))
