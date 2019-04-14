@@ -13,3 +13,6 @@ rem_pattern.txt: occurences.txt
 
 filtered.txt: rem_pattern.txt english.txt
 	awk '{a=$$0; s="\x80"; gsub(/[[:punct:]]/, " ", a); print a s $$0}' english.txt | tee pairs.txt | grep -a -v -F -f rem_pattern.txt - | awk -F '\x80' '{print $$2}' - | tee filtered.txt | wc -l
+
+subsampled.txt: filtered.txt
+	shuf -n 10000 -o subsampled.txt filtered.txt 
