@@ -23,7 +23,7 @@ if __name__ == "__main__":
         return [str(byte) for b in byte]
 
     out = deque(string_to_byte(seed), 40)
-    for i in range(args.string_length):
+    for i in range(40):
         out.append(str(model(list(out))))
 
     print("generated:" + byte_to_string(list(out)))
