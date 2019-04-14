@@ -82,7 +82,7 @@ def train(model, loader, optimizer, criterion, epoch, device):
         input, target = input.to(device), target.to(device)
         optimizer.zero_grad()
         output = model(input)
-        loss = criterion(output, target)
+        loss = Variable(criterion(output, target), requires_grad=True)
         loss.backward()
         optimizer.step()
     print('Train: epoch {}\t'.format(epoch))
