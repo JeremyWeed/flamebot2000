@@ -43,6 +43,7 @@ class RNN(nn.Module):
                                  dim=0)
         output = self.softmax(self.output(attn_weights))
         print(output.size())
+        print(type(output))
         _, out = torch.max(output)
         return output
 
