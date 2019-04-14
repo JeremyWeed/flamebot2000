@@ -7,7 +7,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torch
 from torch.autograd import Variable
-from torch.utils import Data
+from torch.utils import data
 
 
 class RNN(nn.Module):
@@ -47,7 +47,7 @@ class RNN(nn.Module):
     def initHidden(self):
         return torch.zeros(1, self.hidden_size)
 
-def Dataset(data.Dataset):
+class Dataset(data.Dataset):
       'Characterizes a dataset for PyTorch'
     def __init__(self, path, n_samples, n_read):
         'Initialization'
@@ -96,16 +96,23 @@ if __name__ == '__main__':
                         help='momentum')
     parser.add_argument('--epochs', type=int, default=10,
                         help='epochs')
+    parser.add_argument('--n_chars', type=int, default=40,
+                        help='number of chars to feed in at a time')
     args = parser.parse_args()
     torch.manual_seed(args.seed)
     random.seed(args.seed)
+
+    file_size = os.path.getsize('args.data_path')
+    
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     model = RNN(40, 40, 40, 40)
     model.to(device)
     optimizer = optim.SGD(model.parameters(), lr=args.lr,
                           momentum=args.momentum)
     criterion = nn.CrossEntropyLoss()
-
+    train_loader = torch.utils.data.DataLoader(
+        Dataset(args.data_path, file_size-args.n_chars, args.n_chars),
+        batch_size=64, shuffle=True, num_workers=4)
     for epoch in range(args.epochs):
         train(model, train_loader, optimizer, criterion, epoch, device)
-        test(model, test_loader, criterion, epoch, device)
+        
