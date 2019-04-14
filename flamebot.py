@@ -108,7 +108,7 @@ if __name__ == '__main__':
     file_size = os.path.getsize(args.data_path)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    model = RNN(args.n_chars, 40, 40, 40)
+    model = RNN(args.n_chars, 40, 128, 128)
     model.to(device)
     optimizer = optim.SGD(model.parameters(), lr=args.lr,
                           momentum=args.momentum)
