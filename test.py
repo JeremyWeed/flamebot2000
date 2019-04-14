@@ -12,7 +12,7 @@ if __name__ == "__main__":
                         default='flamebot2000.pt')
 
     args = parser.parse_args()
-    model = RNN(40, 40, 128, 128)
+    model = RNN(128, 40, 128, 128)
     model.load_state_dict(torch.load(args.model_file))
     seed = args.starting_char * 40
 
