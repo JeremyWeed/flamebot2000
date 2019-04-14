@@ -85,6 +85,7 @@ def train(model, loader, optimizer, criterion, epoch, device):
         loss = Variable(criterion(output, target), requires_grad=True)
         loss.backward()
         optimizer.step()
+        print('batch {} done'.format(i))
     print('Train: epoch {}\t'.format(epoch))
 
 
