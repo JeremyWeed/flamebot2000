@@ -37,8 +37,8 @@ class RNN(nn.Module):
     def forward(self, x):
         # x is input of length 40? of character indices
         embeddings = self.embedding(x)
-        l1 = self.lstm1(embeddings)
-        l2 = self.lstm1(l1)
+        l1, _ = self.lstm1(embeddings)
+        l2, _ = self.lstm1(l1)
         attn_weights = F.softmax(self.attn(torch.cat((embeddings, l1, l2), 1)),
                                  dim=1)
         output = self.softmax(self.output(attn_weights))
@@ -55,6 +55,7 @@ class Dataset(data.Dataset):
         self.path = path
         self.n_samples = n_samples
         self.n_read = n_read
+        self.f = open(self.path, 'rb')
 
     def __len__(self):
         'Denotes the total number of samples'
@@ -63,9 +64,8 @@ class Dataset(data.Dataset):
     def __getitem__(self, index):
         'Generates one sample of data'
         # Select sample
-        f = open(self.path, 'rb')
-        f.seek(index)
-        X = f.read(self.n_read+1)
+        self.f.seek(index)
+        X = self.f.read(self.n_read+1)
         X = [int(c) for c in X]
         # Load data and get label
         X = torch.tensor(X[:-1], dtype=torch.long)
