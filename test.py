@@ -26,6 +26,6 @@ if __name__ == "__main__":
     for i in range(40):
         d = model(torch.tensor(list(out), dtype=torch.long)
                   .unsqueeze(0))
-        out.append(d)
+        out.append(d.tolist())
 
     print("generated:" + byte_to_string(out.tolist()))
