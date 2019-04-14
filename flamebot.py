@@ -68,7 +68,7 @@ class Dataset(data.Dataset):
         X = f.read(self.n_read+1)
         X = [int(c) for c in X]
         # Load data and get label
-        X = torch.tensor(X[:-1], dtype=torch.uint8)
+        X = torch.tensor(X[:-1], dtype=torch.long)
         y = X[-1]
         return X, y
 
