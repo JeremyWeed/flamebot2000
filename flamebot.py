@@ -40,7 +40,7 @@ class RNN(nn.Module):
         l1, _ = self.lstm1(embeddings)
         l2, _ = self.lstm2(l1)
         attn_weights = F.softmax(self.attn(torch.cat((embeddings, l1, l2), 1)),
-                                 dim=1)
+                                 dim=0)
         output = self.softmax(self.output(attn_weights))
         return output
 
