@@ -27,7 +27,7 @@ class RNN(nn.Module):
         self.lstm2 = nn.LSTM(input_size=self.hidden_size,
                              hidden_size=self.hidden_size)
         # attention layer
-        self.attn = nn.Linear(self.n_chars+2*self.hidden_size,
+        self.attn = nn.Linear(100+2*self.hidden_size,
                               self.n_chars+2*self.hidden_size)
         # dense output layer
         self.output = nn.Linear(self.n_chars+2*self.hidden_size, self.n_chars)
