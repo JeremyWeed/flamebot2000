@@ -21,7 +21,7 @@ class RNN(nn.Module):
         # char embedding layer, needs one hot input
         self.embedding = nn.Embedding(self.n_chars, 100)
         # 1st lstm
-        self.lstm1 = nn.LSTM(input_size=self.n_chars,
+        self.lstm1 = nn.LSTM(input_size=100,
                              hidden_size=self.hidden_size)
         # 2nd lstm layer
         self.lstm2 = nn.LSTM(input_size=self.hidden_size,
