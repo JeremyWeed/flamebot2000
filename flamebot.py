@@ -7,6 +7,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torch
 from torch.autograd import Variable
+from torch.utils import Data
 
 
 class RNN(nn.Module):
@@ -46,6 +47,28 @@ class RNN(nn.Module):
     def initHidden(self):
         return torch.zeros(1, self.hidden_size)
 
+def Dataset(data.Dataset):
+      'Characterizes a dataset for PyTorch'
+    def __init__(self, path, n_samples, n_read):
+        'Initialization'
+        self.path = path
+        self.n_read = n_read
+        
+    def __len__(self):
+      'Denotes the total number of samples'
+        return len(self.n_samples)
+
+    def __getitem__(self, index):
+      'Generates one sample of data'
+      # Select sample
+        f = open(self.path,'rb')
+        f.seek(index)
+        X = f.read(self.n_read+1)
+        X = [int(c) for c in X]
+        # Load data and get label
+        X = torch.tensor(X[:-1], dtype = torch.uint8)
+        y = X[-1]
+        return X, y
 
 def train(model, loader, optimizer, criterion, epoch, device):
     model.train()
