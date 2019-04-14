@@ -32,7 +32,7 @@ class RNN(nn.Module):
         # dense output layer
         self.output = nn.Linear(self.n_chars+2*self.hidden_size, self.n_chars)
         # softmax output for probabilities
-        self.softmax = nn.Softmax(dim=1)
+        self.softmax = nn.Softmax(dim=2)
 
     def forward(self, x):
         # x is input of length 40? of character indices
